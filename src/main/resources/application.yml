@@ -22,3 +22,7 @@ spring:
           batch_size: 1000
     hibernate:
       ddl-auto: validate
+    show-sql: true
+  h2:
+    console:
+      enabled: true
