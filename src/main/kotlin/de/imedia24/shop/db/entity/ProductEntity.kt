@@ -1,6 +1,7 @@
 package de.imedia24.shop.db.entity
 
 import de.imedia24.shop.domain.product.CreateProductDto
+import de.imedia24.shop.domain.product.ProductDto
 import de.imedia24.shop.domain.product.UpdateProductDto
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -32,19 +33,30 @@ data class ProductEntity(
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
-    val createdAt: ZonedDateTime = ZonedDateTime.now(),
+    val createdAt: ZonedDateTime,
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: ZonedDateTime = ZonedDateTime.now()
-){
+    val updatedAt: ZonedDateTime ){
+
+    fun toDto(): ProductDto = ProductDto(
+            sku = this.sku,
+            name = this.name,
+            description = this.description ?: "",
+            price = this.price,
+            stock = this.stock
+    )
+
     companion object {
         fun fromDto(dto: CreateProductDto) = ProductEntity(
                 sku = dto.sku,
                 name = dto.name,
                 description = dto.description ?: "",
                 price = dto.price,
-                stock = dto.stock)
+                stock = dto.stock,
+                createdAt = ZonedDateTime.now(),
+                updatedAt = ZonedDateTime.now()
+        )
 
         fun fromDto(dto: UpdateProductDto, existingProduct: ProductEntity) = ProductEntity(
                 sku = existingProduct.sku,
@@ -52,8 +64,8 @@ data class ProductEntity(
                 description = dto.description ?: existingProduct.name,
                 price = dto.price ?: existingProduct.price,
                 stock = existingProduct.stock,
-                updatedAt = ZonedDateTime.now(),
-                createdAt = existingProduct.createdAt)
+                createdAt = existingProduct.createdAt,
+                updatedAt = ZonedDateTime.now())
     }
 
 }

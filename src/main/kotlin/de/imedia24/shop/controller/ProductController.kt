@@ -1,8 +1,7 @@
 package de.imedia24.shop.controller
 
-import de.imedia24.shop.db.entity.ProductEntity
 import de.imedia24.shop.domain.product.CreateProductDto
-import de.imedia24.shop.domain.product.ProductResponse
+import de.imedia24.shop.domain.product.ProductDto
 import de.imedia24.shop.domain.product.UpdateProductDto
 import de.imedia24.shop.service.ProductService
 import org.slf4j.LoggerFactory
@@ -19,7 +18,7 @@ class ProductController(private val productService: ProductService) {
     @GetMapping("/products/{sku}", produces = ["application/json;charset=utf-8"])
     fun findProductBySku(
         @PathVariable("sku") sku: String
-    ): ResponseEntity<ProductResponse> {
+    ): ResponseEntity<ProductDto> {
         logger.info("Request for product $sku")
 
         val product = productService.findProductBySku(sku)
@@ -33,7 +32,7 @@ class ProductController(private val productService: ProductService) {
     @GetMapping("/products", produces = ["application/json;charset=utf-8"])
     fun findProductsBySku(
             @RequestParam(name = "skus") skus: String
-    ): ResponseEntity<List<ProductResponse>> {
+    ): ResponseEntity<List<ProductDto>> {
         logger.info("Retrieving products")
         val listSkus = skus.split(",");
         val products = productService.findProductsBySku(listSkus)
@@ -44,17 +43,17 @@ class ProductController(private val productService: ProductService) {
         }
     }
     @PostMapping("/products", produces = ["application/json;charset=utf-8"])
-    fun addNewProduct(@RequestBody product: CreateProductDto): ResponseEntity<ProductResponse> {
+    fun addNewProduct(@RequestBody product: CreateProductDto): ResponseEntity<ProductDto> {
         logger.info("Request to add a product")
         val persistedProduct = productService.addProduct(product);
         if (ObjectUtils.isEmpty(persistedProduct)) {
-            return ResponseEntity<ProductResponse>(HttpStatus.BAD_REQUEST)
+            return ResponseEntity<ProductDto>(HttpStatus.BAD_REQUEST)
         }
         return ResponseEntity(persistedProduct, HttpStatus.CREATED)
     }
 
     @PutMapping("/products/{sku}", produces = ["application/json;charset=utf-8"])
-    fun updateProduct(@PathVariable("sku") sku: String, @RequestBody product: UpdateProductDto) : ResponseEntity<ProductResponse> {
+    fun updateProduct(@PathVariable("sku") sku: String, @RequestBody product: UpdateProductDto) : ResponseEntity<ProductDto> {
         logger.info("Request to update product: {}", sku)
         val updatedProduct = productService.updateProduct(sku, product)
         if (updatedProduct != null) {

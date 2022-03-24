@@ -3,30 +3,29 @@ package de.imedia24.shop.service
 import de.imedia24.shop.db.entity.ProductEntity
 import de.imedia24.shop.db.repository.ProductRepository
 import de.imedia24.shop.domain.product.CreateProductDto
-import de.imedia24.shop.domain.product.ProductResponse
-import de.imedia24.shop.domain.product.ProductResponse.Companion.toProductResponse
+import de.imedia24.shop.domain.product.ProductDto
 import de.imedia24.shop.domain.product.UpdateProductDto
 import org.springframework.stereotype.Service
 
 @Service
 class ProductService(private val productRepository: ProductRepository) {
 
-    fun findProductBySku(sku: String): ProductResponse? = productRepository.findBySku(sku)?.toProductResponse()
+    fun findProductBySku(sku: String): ProductDto? = productRepository.findBySku(sku)?.toDto()
 
-    fun findProductsBySku(skus: List<String>?): List<ProductResponse> {
-        val products = mutableListOf<ProductResponse>()
+    fun findProductsBySku(skus: List<String>?): List<ProductDto> {
+        val products = mutableListOf<ProductDto>()
         skus?.forEach{
-            productRepository.findBySku(it)?.let { it1 -> products.add(it1.toProductResponse()) }
+            productRepository.findBySku(it)?.let { it1 -> products.add(it1.toDto()) }
         }
         return products;
     }
 
-    fun addProduct(product: CreateProductDto): ProductResponse = productRepository.save(ProductEntity.fromDto(product)).toProductResponse()
+    fun addProduct(product: CreateProductDto): ProductDto = productRepository.save(ProductEntity.fromDto(product)).toDto()
 
-    fun updateProduct(sku: String, product: UpdateProductDto): ProductResponse? {
+    fun updateProduct(sku: String, product: UpdateProductDto): ProductDto? {
 
         val currentProduct = productRepository.findBySku(sku)
-        return if (currentProduct != null) productRepository.save(ProductEntity.fromDto(product, currentProduct)).toProductResponse()
+        return if (currentProduct != null) productRepository.save(ProductEntity.fromDto(product, currentProduct)).toDto()
         else null
     }
 }
