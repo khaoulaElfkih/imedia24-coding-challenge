@@ -61,7 +61,7 @@ data class ProductEntity(
         fun fromDto(dto: UpdateProductDto, existingProduct: ProductEntity) = ProductEntity(
                 sku = existingProduct.sku,
                 name = dto.name ?: existingProduct.name,
-                description = dto.description ?: existingProduct.name,
+                description = dto.description ?: existingProduct.description,
                 price = dto.price ?: existingProduct.price,
                 stock = existingProduct.stock,
                 createdAt = existingProduct.createdAt,

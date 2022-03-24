@@ -25,7 +25,7 @@ class ProductController(private val productService: ProductService) {
         return if(product == null) {
             ResponseEntity.notFound().build()
         } else {
-            ResponseEntity.ok(product)
+            ResponseEntity.ok().body(product)
         }
     }
 
@@ -56,10 +56,10 @@ class ProductController(private val productService: ProductService) {
     fun updateProduct(@PathVariable("sku") sku: String, @RequestBody product: UpdateProductDto) : ResponseEntity<ProductDto> {
         logger.info("Request to update product: {}", sku)
         val updatedProduct = productService.updateProduct(sku, product)
-        if (updatedProduct != null) {
-            return ResponseEntity.ok(updatedProduct)
+        return if (updatedProduct != null) {
+            ResponseEntity.ok().body(updatedProduct)
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            ResponseEntity.notFound().build()
         }
     }
 }
