@@ -2,8 +2,10 @@ package de.imedia24.shop.service
 
 import de.imedia24.shop.db.entity.ProductEntity
 import de.imedia24.shop.db.repository.ProductRepository
+import de.imedia24.shop.domain.product.CreateProductDto
 import de.imedia24.shop.domain.product.ProductResponse
 import de.imedia24.shop.domain.product.ProductResponse.Companion.toProductResponse
+import de.imedia24.shop.domain.product.UpdateProductDto
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,15 +21,12 @@ class ProductService(private val productRepository: ProductRepository) {
         return products;
     }
 
+    fun addProduct(product: CreateProductDto): ProductResponse = productRepository.save(ProductEntity.fromDto(product)).toProductResponse()
 
-    /*fun findAllProducts(): List<ProductResponse>? {
-        val products = mutableListOf<ProductResponse>()
-         productRepository.findAll().forEach {
-             products.add(it.toProductResponse())
-        }
-        return products
+    fun updateProduct(sku: String, product: UpdateProductDto): ProductResponse? {
+
+        val currentProduct = productRepository.findBySku(sku)
+        return if (currentProduct != null) productRepository.save(ProductEntity.fromDto(product, currentProduct)).toProductResponse()
+        else null
     }
-
-    fun addProduct(product: ProductEntity): ProductRequest =productRepository.save(product).toProductRequest();*/
-
 }
