@@ -15,7 +15,7 @@ class ProductController(private val productService: ProductService) {
 
     private val logger = LoggerFactory.getLogger(ProductController::class.java)!!
 
-    @GetMapping("/products/{sku}", produces = ["application/json;charset=utf-8"])
+    @GetMapping("/products/{sku}", produces = ["application/json"])
     fun findProductBySku(
         @PathVariable("sku") sku: String
     ): ResponseEntity<ProductDto> {
@@ -29,7 +29,7 @@ class ProductController(private val productService: ProductService) {
         }
     }
 
-    @GetMapping("/products", produces = ["application/json;charset=utf-8"])
+    @GetMapping("/products", produces = ["application/json"])
     fun findProductsBySku(
             @RequestParam(name = "skus") skus: String
     ): ResponseEntity<List<ProductDto>> {
@@ -42,7 +42,7 @@ class ProductController(private val productService: ProductService) {
             ResponseEntity.ok(products)
         }
     }
-    @PostMapping("/products", produces = ["application/json;charset=utf-8"])
+    @PostMapping("/products", produces = ["application/json"])
     fun addNewProduct(@RequestBody product: CreateProductDto): ResponseEntity<ProductDto> {
         logger.info("Request to add a product")
         val persistedProduct = productService.addProduct(product);
@@ -52,7 +52,7 @@ class ProductController(private val productService: ProductService) {
         return ResponseEntity(persistedProduct, HttpStatus.CREATED)
     }
 
-    @PutMapping("/products/{sku}", produces = ["application/json;charset=utf-8"])
+    @PutMapping("/products/{sku}", produces = ["application/json"])
     fun updateProduct(@PathVariable("sku") sku: String, @RequestBody product: UpdateProductDto) : ResponseEntity<ProductDto> {
         logger.info("Request to update product: {}", sku)
         val updatedProduct = productService.updateProduct(sku, product)
