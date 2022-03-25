@@ -15,7 +15,7 @@ class ProductService(private val productRepository: ProductRepository) {
     fun findProductsBySku(skus: List<String>?): List<ProductDto> {
         val products = mutableListOf<ProductDto>()
         skus?.forEach{
-            productRepository.findBySku(it)?.let { it1 -> products.add(it1.toDto()) }
+            productRepository.findBySku(it)?.let { product -> products.add(product.toDto()) }
         }
         return products;
     }

@@ -54,8 +54,8 @@ data class ProductEntity(
                 description = dto.description ?: "",
                 price = dto.price,
                 stock = dto.stock,
-                createdAt = ZonedDateTime.now(),
-                updatedAt = ZonedDateTime.now()
+                createdAt = dto.createdAt,
+                updatedAt = dto.updatedAt
         )
 
         fun fromDto(dto: UpdateProductDto, existingProduct: ProductEntity) = ProductEntity(
@@ -63,7 +63,7 @@ data class ProductEntity(
                 name = dto.name ?: existingProduct.name,
                 description = dto.description ?: existingProduct.description,
                 price = dto.price ?: existingProduct.price,
-                stock = existingProduct.stock,
+                stock = dto.stock ?: existingProduct.stock,
                 createdAt = existingProduct.createdAt,
                 updatedAt = ZonedDateTime.now())
     }
