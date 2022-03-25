@@ -26,7 +26,7 @@ Build imedia shop docker image and run it in a docker container:
 3- To check wether the image correctly built run the following command : docker images.
 
 The result should be as shown below : 
-![img.png](img.png)
+![img.png](readme-ressources/img.png)
 
 4- Run the image by the following command : docker run -d -p 3333:8080 imedia-shop-challenge
 
@@ -39,6 +39,6 @@ The result should be as shown below :
 6- To inspect if it is running type the following: docker container ls -a
 
 The result should be as shown below :
-![img_1.png](img_1.png)
+![img_1.png](readme-ressources/img_1.png)
 
 7- To stop the application just use Ctrl + C combination
