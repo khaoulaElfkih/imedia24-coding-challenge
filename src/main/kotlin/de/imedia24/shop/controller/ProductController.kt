@@ -34,12 +34,16 @@ class ProductController(private val productService: ProductService) {
             @RequestParam(name = "skus") skus: String
     ): ResponseEntity<List<ProductDto>> {
         logger.info("Retrieving products")
-        val listSkus = skus.split(",");
-        val products = productService.findProductsBySku(listSkus)
-        return if(products.isEmpty()) {
-            ResponseEntity.notFound().build()
-        } else {
-            ResponseEntity.ok(products)
+        return if(skus == ""){
+             ResponseEntity.badRequest().build()
+        }else{
+            val listSkus =  skus.split(",").filter {it.isNotEmpty()}
+            val products = productService.findProductsBySku(listSkus)
+            return if(products.isEmpty()) {
+                ResponseEntity.notFound().build()
+            } else {
+                ResponseEntity.ok(products)
+            }
         }
     }
     @PostMapping("/products", produces = ["application/json"])

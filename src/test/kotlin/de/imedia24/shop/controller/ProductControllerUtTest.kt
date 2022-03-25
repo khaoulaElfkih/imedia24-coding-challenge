@@ -97,4 +97,13 @@ class ProductControllerUtTest(@Autowired val mockMvc: MockMvc) {
                 .andDo(print())
                 .andExpect(status().isNotFound)
     }
+    @Test
+    fun `Retrieving a list of products by an empty skus param should result in status 400 bad request`() {
+
+        //When and Then
+        mockMvc.perform(get("/products?skus=", "")
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isBadRequest)
+    }
 }
